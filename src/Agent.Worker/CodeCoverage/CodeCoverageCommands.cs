@@ -20,6 +20,8 @@ namespace Microsoft.VisualStudio.Services.Agent.Worker.CodeCoverage
         private string _codeCoverageTool;
         private string _reportDirectory;
 
+        public string SupportedHostType => "build";
+
         public void ProcessCommand(IExecutionContext context, Command command)
         {
             if (string.Equals(command.Event, WellKnownResultsCommand.PublishCodeCoverage, StringComparison.OrdinalIgnoreCase))

@@ -52,6 +52,14 @@ namespace Microsoft.VisualStudio.Services.Agent.Worker
             IWorkerCommandExtension extension;
             if (_commandExtensions.TryGetValue(command.Area, out extension))
             {
+                if (!string.IsNullOrEmpty(extension.SupportedHostType) &&
+                    !string.Equals(context.Variables.System_HostType, extension.SupportedHostType, StringComparison.OrdinalIgnoreCase))
+                {
+                    context.Error(StringUtil.Loc("CommandNotSupported", command.Area, context.Variables.System_HostType));
+                    context.CommandResult = TaskResult.Failed;
+                    return false;
+                }
+
                 // process logging command in serialize oreder.
                 lock (_commandSerializeLock)
                 {
@@ -88,6 +96,8 @@ namespace Microsoft.VisualStudio.Services.Agent.Worker
     public interface IWorkerCommandExtension : IExtension
     {
         string CommandArea { get; }
+
+        string SupportedHostType { get; }
 
         void ProcessCommand(IExecutionContext context, Command command);
     }

@@ -17,6 +17,8 @@ namespace Microsoft.VisualStudio.Services.Agent.Worker
 
         public string CommandArea => "task";
 
+        public string SupportedHostType => string.Empty;
+
         public void ProcessCommand(IExecutionContext context, Command command)
         {
             // TODO: update tasklib alway product ##vso[task.logissue]
