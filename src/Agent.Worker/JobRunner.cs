@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.Services.Agent.Worker
     public sealed class JobRunner : AgentService, IJobRunner
     {
         private IJobServerQueue _jobServerQueue;
-        private ICacheDirectoryManager _cacheDirectoryManager;
+        private ITempDirectoryManager _cacheDirectoryManager;
 
         public async Task<TaskResult> RunAsync(AgentJobRequestMessage message, CancellationToken jobRequestCancellationToken)
         {
@@ -111,7 +111,7 @@ namespace Microsoft.VisualStudio.Services.Agent.Worker
                 jobContext.Variables.Set(Constants.Variables.System.WorkFolder, IOUtil.GetWorkPath(HostContext));
 
                 // Setup TEMP directories
-                _cacheDirectoryManager = HostContext.GetService<ICacheDirectoryManager>();
+                _cacheDirectoryManager = HostContext.GetService<ITempDirectoryManager>();
                 _cacheDirectoryManager.InitializeTempDirectory(jobContext);
 
                 // todo: task server can throw. try/catch and fail job gracefully.

@@ -4,14 +4,14 @@ using System.IO;
 
 namespace Microsoft.VisualStudio.Services.Agent.Worker
 {
-    [ServiceLocator(Default = typeof(CacheDirectoryManager))]
-    public interface ICacheDirectoryManager : IAgentService
+    [ServiceLocator(Default = typeof(TempDirectoryManager))]
+    public interface ITempDirectoryManager : IAgentService
     {
         void InitializeTempDirectory(IExecutionContext jobContext);
         void CleanupTempDirectory(IExecutionContext jobContext);
     }
 
-    public sealed class CacheDirectoryManager : AgentService, ICacheDirectoryManager
+    public sealed class TempDirectoryManager : AgentService, ITempDirectoryManager
     {
         public void InitializeTempDirectory(IExecutionContext jobContext)
         {
