@@ -110,11 +110,11 @@ namespace Microsoft.VisualStudio.Services.Agent.Worker
                 jobContext.Variables.Set(Constants.Variables.Agent.WorkFolder, IOUtil.GetWorkPath(HostContext));
                 jobContext.Variables.Set(Constants.Variables.System.WorkFolder, IOUtil.GetWorkPath(HostContext));
 
-                // Setup TEMP and common cache directories (NUGET_PACKAGES, etc).
+                // Setup TEMP directories
                 _cacheDirectoryManager = HostContext.GetService<ICacheDirectoryManager>();
-                _cacheDirectoryManager.Initialize(jobContext);
+                _cacheDirectoryManager.InitializeTempDirectory(jobContext);
 
-// todo: task server can throw. try/catch and fail job gracefully.
+                // todo: task server can throw. try/catch and fail job gracefully.
                 // prefer task definitions url, then TFS collection url, then TFS account url
                 var taskServer = HostContext.GetService<ITaskServer>();
                 Uri taskServerUri = null;
@@ -298,7 +298,7 @@ namespace Microsoft.VisualStudio.Services.Agent.Worker
         private async Task<TaskResult> CompleteJobAsync(IJobServer jobServer, IExecutionContext jobContext, AgentJobRequestMessage message, TaskResult? taskResult = null)
         {
             // Clean TEMP.
-            _cacheDirectoryManager?.Cleanup(jobContext);
+            _cacheDirectoryManager?.CleanupTempDirectory(jobContext);
 
             jobContext.Section(StringUtil.Loc("StepFinishing", message.JobName));
             TaskResult result = jobContext.Complete(taskResult);
