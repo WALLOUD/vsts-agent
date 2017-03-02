@@ -133,10 +133,10 @@ namespace Microsoft.VisualStudio.Services.Agent.Util
 
         public static void DeleteDirectory(string path, CancellationToken cancellationToken)
         {
-            DeleteDirectory(path, contentsOnly: false, cancellationToken: cancellationToken);
+            DeleteDirectory(path, contentsOnly: false, continueOnContentDeleteError: false, cancellationToken: cancellationToken);
         }
 
-        public static void DeleteDirectory(string path, bool contentsOnly, CancellationToken cancellationToken)
+        public static void DeleteDirectory(string path, bool contentsOnly, bool continueOnContentDeleteError, CancellationToken cancellationToken)
         {
             ArgUtil.NotNullOrEmpty(path, nameof(path));
             DirectoryInfo directory = new DirectoryInfo(path);
@@ -223,6 +223,11 @@ namespace Microsoft.VisualStudio.Services.Agent.Util
                                     }
                                 }
 
+                                success = true;
+                            }
+                            catch (Exception) when (continueOnContentDeleteError)
+                            {
+                                // ignore any exception when continueOnContentDeleteError is true.
                                 success = true;
                             }
                             finally
@@ -356,7 +361,7 @@ namespace Microsoft.VisualStudio.Services.Agent.Util
                 failsafe = 100;
             }
 
-            for (int i = 0 ; i < failsafe ; i++)
+            for (int i = 0; i < failsafe; i++)
             {
                 try
                 {

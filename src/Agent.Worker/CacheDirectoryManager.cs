@@ -30,11 +30,10 @@ namespace Microsoft.VisualStudio.Services.Agent.Worker
                 jobContext.Debug($"Cleaning temp folder: {tempDirectory}");
                 try
                 {
-                    IOUtil.DeleteDirectory(tempDirectory, contentsOnly: true, cancellationToken: jobContext.CancellationToken);
+                    IOUtil.DeleteDirectory(tempDirectory, contentsOnly: true, continueOnContentDeleteError: true, cancellationToken: jobContext.CancellationToken);
                 }
                 catch (Exception ex)
                 {
-                    Trace.Error("Failed cleaning one or more temp file");
                     Trace.Error(ex);
                 }
                 finally
@@ -70,11 +69,10 @@ namespace Microsoft.VisualStudio.Services.Agent.Worker
                 jobContext.Debug($"Cleaning temp folder: {tempDirectory}");
                 try
                 {
-                    IOUtil.DeleteDirectory(tempDirectory, contentsOnly: true, cancellationToken: jobContext.CancellationToken);
+                    IOUtil.DeleteDirectory(tempDirectory, contentsOnly: true, continueOnContentDeleteError: true, cancellationToken: jobContext.CancellationToken);
                 }
                 catch (Exception ex)
                 {
-                    Trace.Error("Failed cleaning one or more temp file");
                     Trace.Error(ex);
                 }
             }
