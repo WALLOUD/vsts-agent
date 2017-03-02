@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.Services.Agent.Worker
         void CleanupTempDirectory(IExecutionContext jobContext);
     }
 
-    public sealed class CacheDirectoryManager : AgentService
+    public sealed class CacheDirectoryManager : AgentService, ICacheDirectoryManager
     {
         public void InitializeTempDirectory(IExecutionContext jobContext)
         {
